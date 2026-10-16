@@ -1,4 +1,4 @@
 package model;
 
-public class OrderStatus {
-}
+public enum OrderStatus { CONFIRMED, CANCELLED }
+
