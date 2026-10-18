@@ -1,0 +1,16 @@
+digraph G {
+  rankdir=LR; fontname="Helvetica"; node [shape=record, fontname="Helvetica", fontsize=10, style=filled, fillcolor=white]; edge [fontname="Helvetica", fontsize=9];
+  Main [label="{Main (Client)|+ main(args)}", fillcolor="#e8f0fe"];
+  Facade [label="{OrderFacade|- orders: Map\<String, Order\>|+ placeOrder(cart, customer): Order\l+ cancelOrder(orderId): Order\l- reserveStock() / charge() / ship()\l- rollback()\l}", fillcolor="#fff3cd"];
+  Inv [label="{InventoryService|- stock, reservations|+ reserve(items): String\l+ release(reservationId)\l+ addStock() / available()\l}"];
+  Pay [label="{PaymentProcessor|- balances, charges|+ charge(token, amount): String\l+ refund(paymentId)\l}"];
+  Ship [label="{ShippingService|- activeShipments|+ schedule(address): String\l+ cancel(shipmentId)\l}"];
+  Not [label="{NotificationService|- outbox|+ send(email, subject, body)\l}"];
+  Fail [label="{OrderFailedException|single exception type for clients}", fillcolor="#fdecea"];
+  Model [label="{Cart, Customer, Order, Product|(data / model classes)}", fillcolor="#eeeeee"];
+  Main -> Facade [label="uses"];
+  Main -> Model [label="builds", style=dashed];
+  Facade -> Inv; Facade -> Pay; Facade -> Ship; Facade -> Not;
+  Facade -> Fail [style=dashed, label="throws"];
+  Facade -> Model [style=dashed];
+}
